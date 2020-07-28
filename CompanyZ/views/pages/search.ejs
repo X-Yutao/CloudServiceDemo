@@ -1,0 +1,27 @@
+<h1 class="display-4">Job Information Found</h1>
+<form method="post" action="/order">
+    <div class="form-group">
+        <label for="jobName">jobName</label>
+        <input type="text" name="jobName" class="form-control" value="<%= jobName %>" readonly="true">
+
+    <div class="form-group">
+        <label for="partId">partId</label>
+        <input type="number" name="partId" class="form-control" value="<%= partId %>" readonly="true">
+    </div>
+    <div class="form-group">
+        <label for="qty">max-qty</label>
+        <input type="number" name="qty" class="form-control" value="<%= qty %>" readonly="true">
+    </div>
+    <div class="form-group">
+        <label for="qty">qty you order</label>
+        <input type="number" name="order_qty" class="form-control">
+    </div>
+
+    <% if(req.session.login){ %>
+        <input type="submit" class="btn btn-primary" value="Order">
+    <% } %>
+    <% if(!req.session.login){ %>
+        <input type="submit" class="btn btn-primary" value="Order" title="You Must Login to Order" disabled style="cursor: not-allowed;">
+    <% } %>
+    
+</form>

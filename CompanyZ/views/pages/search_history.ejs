@@ -1,0 +1,19 @@
+<h1 class="display-4">search history</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>jobName</th>
+            <th>month</th>
+            <th>date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% historys.forEach(function(history){ %>
+            <tr>
+                <td><%= history.jobName %></td>
+                <td><%= history.month %></td>
+                <td><%= history.date %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
