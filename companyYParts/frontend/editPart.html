@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Part</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="jquery-3.5.1.js"></script>
+  	<script src="knockout-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.2/umd/popper.min.js" integrity="sha256-XahKYIZhnEztrOcCTmaEErjYDLoLqBoDJbVMYybyjH8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+    	/*$(document).ready(function(){
+    		var partViewModel = function(){
+    			var self = this;
+    			self.partId = ko.observable("");
+    			self.partName = ko.observable("");
+    			self.qoh = ko.observable("");
+    			self.partIdInput = ko.observable("");
+    			self.getPart = function(){
+    				$.ajax({
+    					url: 'https://zo05m564u0.execute-api.us-east-1.amazonaws.com/Dev/getonepart',
+    					cache: false,
+    					crossDomain: true,
+    					contentType: "application/json",
+    					type: 'GET',
+
+    					data: JSON.stringify({
+    						"partId": self.partIdInput()
+    					}),
+    					success: function(data){
+    						self.partId(data.Item.partId)
+    						self.partName(data.Item.partName)
+    						self.partqoh(data.Item.qoh)
+    					}
+    				});
+    			}
+    		}
+    		var viewModel = new partViewModel();
+    		ko.applyBindings(viewModel);
+    	});*/
+    </script>
+
+  </head>
+
+  <body>
+  	
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <a class="navbar-brand" href="index.html">PartInfo</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="allParts.html">List All Parts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="findPart.html">Find Part By ID</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="addPart.html">Add Part Infomation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="allOrders.html">List All Orders</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class= "container">
+     
+    	<ol class="breadcrumb">
+    		<li class="breadcrumb-item"><a href="/list">Part Infomation</a></li>
+    		<li class="breadcrumb-item active">Search</li>
+		</ol>
+		<h1 class="dsiplay-4">Edit Part Infomation</h1>
+
+        <div class="form-group">
+            <label for="partId">PartId (Not editable)</label>
+            <input id="partId" type="text" name="partId" class="form-control" readonly value="">
+        </div>
+        <div class="form-group">
+            <label for="partName">PartName</label>
+            <input id="partName" type="text" name="partName" class="form-control" readonly value="">
+        </div>
+        <div class="form-group">
+            <label for="qoh">Quantity</label>
+            <input id="qoh" type="text" name="qoh" class="form-control">
+        </div>
+    	
+        
+		<input id="editPart" type="button" value="Submit" class="btn btn-primary" >
+    </div>
+
+    <script type="text/javascript">
+    	
+    	$(document).ready(function(){
+            const query = window.location.search;
+            const urlParams = new URLSearchParams(query);
+            console.log(urlParams.get('partId'));
+
+    		var url = "https://zo05m564u0.execute-api.us-east-1.amazonaws.com/Dev/getonepart?partId="+urlParams.get('partId');
+    		$.getJSON(url, function(result){
+    			console.log(result);//already object
+    			
+    			if(result.Item == null){
+    				$("#partId").val("-1");
+    				$("#partName").val("null");
+    				$("#qoh").val("-1");
+                    $("#editPart").attr("disabled", "disabled");
+                    $("#editPart").attr("title", "Something went wrong");
+                    $("#editPart").attr("style", "cursor: not-allowed;");
+    			}
+    			else{
+    				var partId = result.Item.partId;
+    				var partName = result.Item.partName;
+    				var qoh = result.Item.qoh;
+    				$("#partId").val(partId);
+    				$("#partName").val(partName);
+    				$("#qoh").val(qoh);
+    			}
+    		});
+    	});
+
+        $("#editPart").click(function(){
+            var url = "https://zo05m564u0.execute-api.us-east-1.amazonaws.com/Dev/updatepart";
+            var part="{\"body\": \"{\\\"partId\\\": \\\""+$("#partId").val()+"\\\", \\\"partName\\\": \\\""+$("#partName").val()+"\\\", \\\"qoh\\\": \\\""+$("#qoh").val()+"\\\"}\"}";
+            /*{
+                partId: $("#partId").val(),
+                partName: $("#partName").val(),
+                qoh: $("#qoh").val()
+            }*/
+
+            $.ajax({
+                    url: url, 
+                    type: 'PUT',
+                    data: part,
+                    success: function(data){
+                        alert("Edit was Successful");
+                        window.location.href = 'index.html';
+                    }
+            });
+        });
+    </script>
+  </body>
+</html>
