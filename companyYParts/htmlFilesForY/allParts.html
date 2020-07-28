@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>List All Parts</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="jquery-3.5.1.js"></script>
+  	<script src="knockout-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.2/umd/popper.min.js" integrity="sha256-XahKYIZhnEztrOcCTmaEErjYDLoLqBoDJbVMYybyjH8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <a class="navbar-brand" href="index.html">PartInfo</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto">
+          <li id="indexNav" class="nav-item active">
+            <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li id="allPartsNav" class="nav-item">
+            <a class="nav-link" href="allParts.html">List All Parts</a>
+          </li>
+          <li id="findPartNav" class="nav-item">
+            <a class="nav-link" href="findPart.html">Find Part By ID</a>
+          </li>
+          <li id="addPartNav" class="nav-item">
+            <a class="nav-link" href="addPart.html">Add Part Infomation</a>
+          </li>
+          <li id="allOrdersNav" class="nav-item">
+            <a class="nav-link" href="allOrders.html">List All Orders</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+    	$("li").attr("class", "nav-item");
+    	var title = document.title;
+    	if(title == "Home"){
+    		$("#indexNav").attr("class", "nav-item active");
+    	}
+    	else if(title == "List All Parts"){
+			$("#allPartsNav").attr("class", "nav-item active");
+    	}
+    	else if(title == "Find Part By ID"){
+    		$("#findPartNav").attr("class", "nav-item active");
+    	}
+    	else if(title == "Add Part Information"){
+    		$("#addPartNav").attr("class", "nav-item active");
+    	}
+    	else if(title == "List All Orders"){
+    		$("#allOrdersNav").attr("class", "nav-item active");
+    	}
+    </script>
+
+    <div class= 'container'>
+     
+    	<h1 class="display-4">Part Information</h1>
+		<table class="table table-striped">
+    		<thead>
+        		<tr>
+            		<th>Part ID</th>
+            		<th>Part Name</th>
+            		<th>Quantity on Hand</th>
+        		</tr>
+    		</thead>
+    		<tbody>
+        		<!--<% part.forEach(function(p){ %>
+            		<tr>
+                		<td><%= p.partId %></td>
+                		<td><%= p.partName %></td>
+                		<td><%= p.qoh %></td>
+                		<td>
+                    		<a href="/edit/<%= p.partId %>/<%= p.partName %>" class="btn btn-primary">Edit</a>
+                		</td>
+            		</tr>
+        		<% }) %>-->
+    		</tbody>
+		</table>
+
+    </div>
+    <script type="text/javascript">
+      
+      $(document).ready(function(){
+        var url = "https://24u44s77al.execute-api.us-east-1.amazonaws.com/DEV/getpartdetails";
+        $.getJSON(url, function(result){
+          console.log(result.Items);//already object
+          if(result.Items != null){
+            var partId = result.Items.partId;
+            var partName = result.Items.partName;
+            var qoh = result.Items.qoh;
+            (result.Items).forEach(function(part){
+              //var orderElem = $("<td></td>").text("Text.");
+              $('#parts tr:last').after("<tr> <td>"+part.partId+"</td> <td>"+part.partName+"</td> <td>"+part.qoh+"</td> <td>");
+            })
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
