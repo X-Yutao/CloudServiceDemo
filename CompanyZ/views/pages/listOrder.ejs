@@ -1,0 +1,34 @@
+<h1 class="display-4">orders</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>jobName</th>
+            <th>partId</th>
+            <th>qty</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% orders.forEach(function(order){ %>
+            <tr>
+                <td><%= order.userId %></td>
+                <td><%= order.jobName %></td>
+                <td><%= order.partId %></td>
+                <td><%= order.qty %></td>
+                <td><%= order.date %></td>
+                <td><%= order.time %></td>
+                <% if(order.result == 0){ %>
+                    <td>Unsuccessful</td>
+                <% } %>
+                <% if(order.result == 1){ %>
+                    <td>Successfully</td>
+                <% } %>
+                
+                
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New Sails App</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="jquery-3.5.1.js"></script>
+  	<script src="knockout-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.2/umd/popper.min.js" integrity="sha256-XahKYIZhnEztrOcCTmaEErjYDLoLqBoDJbVMYybyjH8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <a class="navbar-brand" href="index.html">PartInfo</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="./index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-listAll.html">List All jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-listOne.html">Find job By jobName and partId</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-addJob.html">Add Job Infomation <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-getOrders.html">List All Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-delete.html">Delete job</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-updateJob.html">Update job</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
+    <div class= 'container'>
+     
+     	<h1 class="display-4">Order Information</h1>
+		<table id="orders" class="table table-striped">
+    		<thead>
+        		<tr>
+        			<th>Job Name</th>
+            		<th>Part ID</th>
+            		<th>User ID</th>
+            		<th>Quantity</th>
+        		</tr>
+    		</thead>
+    		<tbody>
+        		<!--<% part.forEach(function(p){ %>
+            		<tr>
+                		<td><%= p.partId %></td>
+                		<td><%= p.partName %></td>
+                		<td><%= p.qoh %></td>
+                		<td>
+                    		<a href="/edit/<%= p.partId %>/<%= p.partName %>" class="btn btn-primary">Edit</a>
+                		</td>
+            		</tr>
+        		<% }) %>-->
+
+    		</tbody>
+		</table>
+      
+    </div>
+    <script type="text/javascript">
+    	
+    	$(document).ready(function(){
+    		var url = "https://qu2qe5b964.execute-api.us-east-1.amazonaws.com/partorders/listorders";
+    		$.getJSON(url, function(result){
+    			console.log(result.Items);//already object
+    			if(result.Items != null){
+    				var jobName = result.Items.jobName;
+    				var partId = result.Items.partId;
+    				var userId = result.Items.userId;
+    				var qty = result.Items.qty;
+    				(result.Items).forEach(function(order){
+    					//var orderElem = $("<td></td>").text("Text.");
+    					$('#orders tr:last').after("<tr> <td>"+order.jobName+"</td> <td>"+order.partId+"</td> <td>"+order.userId+"</td> <td>"+order.qty+"</td> </tr>"); 
+    				})
+    			}
+    		});
+    	});
+    </script>
+  </body>
+</html>

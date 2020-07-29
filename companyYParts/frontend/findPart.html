@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Find Part By ID</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="jquery-3.5.1.js"></script>
+  	<script src="knockout-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.2/umd/popper.min.js" integrity="sha256-XahKYIZhnEztrOcCTmaEErjYDLoLqBoDJbVMYybyjH8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+    	/*$(document).ready(function(){
+    		var partViewModel = function(){
+    			var self = this;
+    			self.partId = ko.observable("");
+    			self.partName = ko.observable("");
+    			self.qoh = ko.observable("");
+    			self.partIdInput = ko.observable("");
+    			self.getPart = function(){
+    				$.ajax({
+    					url: 'https://zo05m564u0.execute-api.us-east-1.amazonaws.com/Dev/getonepart',
+    					cache: false,
+    					crossDomain: true,
+    					contentType: "application/json",
+    					type: 'GET',
+
+    					data: JSON.stringify({
+    						"partId": self.partIdInput()
+    					}),
+    					success: function(data){
+    						self.partId(data.Item.partId)
+    						self.partName(data.Item.partName)
+    						self.partqoh(data.Item.qoh)
+    					}
+    				});
+    			}
+    		}
+    		var viewModel = new partViewModel();
+    		ko.applyBindings(viewModel);
+    	});*/
+    </script>
+
+  </head>
+
+  <body>
+  	
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <a class="navbar-brand" href="index.html">PartInfo</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto">
+          <li id="indexNav" class="nav-item active">
+            <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li id="allPartsNav" class="nav-item">
+            <a class="nav-link" href="allParts.html">List All Parts</a>
+          </li>
+          <li id="findPartNav" class="nav-item">
+            <a class="nav-link" href="findPart.html">Find Part By ID</a>
+          </li>
+          <li id="addPartNav" class="nav-item">
+            <a class="nav-link" href="addPart.html">Add Part Infomation</a>
+          </li>
+          <li id="allOrdersNav" class="nav-item">
+            <a class="nav-link" href="allOrders.html">List All Orders</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+    	$("li").attr("class", "nav-item");
+    	var title = document.title;
+    	if(title == "Home"){
+    		$("#indexNav").attr("class", "nav-item active");
+    	}
+    	else if(title == "List All Parts"){
+			$("#allPartsNav").attr("class", "nav-item active");
+    	}
+    	else if(title == "Find Part By ID"){
+    		$("#findPartNav").attr("class", "nav-item active");
+    	}
+    	else if(title == "Add Part Information"){
+    		$("#addPartNav").attr("class", "nav-item active");
+    	}
+    	else if(title == "List All Orders"){
+    		$("#allOrdersNav").attr("class", "nav-item active");
+    	}
+    </script>
+
+    <div class= "container">
+     
+    	<ol class="breadcrumb">
+    		<li class="breadcrumb-item"><a href="/list">Part Infomation</a></li>
+    		<li class="breadcrumb-item active">Search</li>
+		</ol>
+		<h1 class="dsiplay-4">Find Part By Name and ID</h1>
+		
+    	
+        <label for="partId">partID</label>
+        <input type="text" id="partIdInput" class="form-control"/>
+    	
+    	
+
+		<div id="result">
+			<table class="table table-striped">
+    			<thead>
+        			<tr>
+            			<th>PartId</th>
+            			<th>Part Name</th>
+            			<th>Quantity on Hand</th>
+        			</tr>
+    			</thead>
+    			<tbody>
+            			<tr>
+                			<td id="partId"></td>
+                			<td id="partName"></td>
+                			<td id="qoh"></td>
+                			<td>
+                    			<a id="edit" href="editPart.html" class="btn btn-primary" style="display: none;">Edit</a>
+                			</td>
+            			</tr>
+        
+    			</tbody>
+			</table>
+		</div>
+		<input id="getPart" type="button" value="Search" class="btn btn-primary" >
+    </div>
+
+    <script type="text/javascript">
+    	
+    	$("#getPart").click(function(){
+    		var url = "https://zo05m564u0.execute-api.us-east-1.amazonaws.com/Dev/getonepart?partId="+$("#partIdInput").val();
+    		$.getJSON(url, function(result){
+    			console.log(result);//already object
+    			/*var partViewModel = function(){
+    				var self = this;
+    				self.partId = ko.observable("");
+    				self.partName = ko.observable("");
+    				self.qoh = ko.observable("");
+    			
+    				self.partId(result.Item.partId)
+    				self.partName(result.Item.partName)
+    				self.qoh(result.Item.qoh)
+    			}
+    			var viewModel = new partViewModel();
+    			var element = $('#elementId')[0]; 
+				ko.cleanNode(element);
+    			ko.applyBindings(viewModel);*/
+    			
+    			if(result.Item == null){
+    				$("#partId").html("No Record");
+    				$("#partName").html("No Record");
+    				$("#qoh").html("No Record");
+    				$("#edit").attr("style", "display: none;");
+    			}
+    			else{
+    				var partId = result.Item.partId;
+    				var partName = result.Item.partName;
+    				var qoh = result.Item.qoh;
+    				$("#partId").html(partId);
+    				$("#partName").html(partName);
+    				$("#qoh").html(qoh);
+
+    				$("#edit").removeAttr("style");
+    				$("#edit").attr("href", "editPart.html?partId="+partId);
+    			}
+    		});
+    	});
+    </script>
+  </body>
+</html>

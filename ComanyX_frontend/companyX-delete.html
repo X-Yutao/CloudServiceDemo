@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New Sails App</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="jquery-3.5.1.js"></script>
+  	<script src="knockout-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.2/umd/popper.min.js" integrity="sha256-XahKYIZhnEztrOcCTmaEErjYDLoLqBoDJbVMYybyjH8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+    </script>
+
+  </head>
+
+  <body>
+  	
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <a class="navbar-brand" href="index.html">JobInfo</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="./index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-listAll.html">List All jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-listOne.html">Find job By jobName and partId</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-addJob.html">Add Job Infomation <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-getOrders.html">List All Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-delete.html">Delete job</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="companyX-updateJob.html">Update job</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class= "container">
+     
+    	<ol class="breadcrumb">
+    		<li class="breadcrumb-item"><a href="companyX-listAll.html">Job Infomation</a></li>
+    		<li class="breadcrumb-item active">Delete</li>
+		</ol>
+		<h1 class="dsiplay-4">Delete Job Infomation</h1>
+
+    <div class="form-group">
+      <label for="jobName">jobName</label>
+      <input id="jobName" type="text" name="jobName" class="form-control" value="">
+    </div>
+    <div class="form-group">
+      <label for="partId">partId</label>
+      <input id="partId" type="text" name="partId" class="form-control" value="">
+    </div>
+    	
+        
+		<input id="delete" type="button" value="Delete" class="btn btn-primary" >
+    </div>
+
+    <script type="text/javascript">
+    	
+    	$(document).ready(function(){
+            const query = window.location.search;
+            const urlParams = new URLSearchParams(query);
+            console.log(urlParams.get('jobName'));
+            console.log(urlParams.get('partId'));
+
+    		var url = "https://71lghtvx78.execute-api.us-east-1.amazonaws.com/wwg6/listone?jobName="+urlParams.get('jobName')+"&partId="+urlParams.get('partId');;
+    		$.getJSON(url, function(result){
+    			console.log(result);//already object
+    			
+    			if(result.Item == null){
+    				$("#jobName").html("No Record");
+    				$("#partId").html("No Record");
+    				$("#qty").html("No Record");
+    			}
+    			else{
+    				var jobName = result.Item.jobName;
+    				var partId = result.Item.partId;
+    				var qty = result.Item.qty;
+    				$("#jobName").val(jobName);
+    				$("#partId").val(partId);
+    				$("#qty").val(qty);
+    			}
+    		});
+    	});
+
+        $("#delete").click(function(){
+            var url = "https://71lghtvx78.execute-api.us-east-1.amazonaws.com/wwg6/delete";
+            var part="{\"body\": \"{\\\"jobName\\\": \\\""+$("#jobName").val()+"\\\", \\\"partId\\\": \\\""+$("#partId").val()+"\\\", \\\"qty\\\": \\\""+$("#qty").val()+"\\\"}\"}";
+            /*{
+                partId: $("#partId").val(),
+                partName: $("#partName").val(),
+                qoh: $("#qoh").val()
+            }*/
+
+            $.ajax({
+                    url: url, 
+                    type: 'PUT',
+                    data: part,
+                    success: function(data){
+                        alert("Delete was Successful");
+                        window.location.href = 'index.html';
+                    }
+            });
+        });
+    </script>
+  </body>
+</html>
