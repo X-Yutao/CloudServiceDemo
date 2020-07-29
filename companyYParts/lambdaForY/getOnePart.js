@@ -5,7 +5,7 @@ exports.handler = (event, context, callback) => {
  var params = {
  TableName : tableName,
  Key : {
- "partId" : event.partId
+ "partId" : parseInt(event.partId)
  }
  };
  docClient.get(params, function(err, data){
