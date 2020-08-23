@@ -1,3 +1,4 @@
 # 4145a7
+开发环境：使用基于JavaScript语言的Node.js，Sails.js编写X,Y,Z共3个网页应用。使用AWS无服务器技术部署X,Y网页应用，并将Z网页应用部署到微软Azure上。
 
-This project includes the code for Assignment 7, such as the code for frontend and lambda functions that support company X and Y.
+项目描述： 该项目模拟了多个公司之间数据交流的情景。X和Y公司作为供应链公司，在X或Y公司的网页中可以分别查询各自公司配件的库存等详细信息。将X,Y的html文件上传到AWS S3 bucket中，并将JavaScript文件上传到AWS Lambda中。在Z公司的网页中可以查询到X和Y公司配件的库存，并且可以向X或Y公司下单。下单的同时，X或Y公司网站的配件数量也会更新。Z公司没有X，Y公司的数据库权限，通过调用X或Y公司的API来更新配件的实时数量。
